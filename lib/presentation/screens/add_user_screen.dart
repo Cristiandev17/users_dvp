@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:users_dvp_app/core/constants/location_constants.dart';
+import 'package:users_dvp_app/core/theme/app_colors.dart';
 import 'package:users_dvp_app/presentation/cubits/add_user/add_user_cubit.dart';
+import 'package:users_dvp_app/presentation/cubits/list_user/list_user_cubit.dart';
+import 'package:users_dvp_app/presentation/widgets/custom_directions.dart';
 import 'package:users_dvp_app/presentation/widgets/custom_text_field.dart';
 
 class AddUserScreen extends StatefulWidget {
@@ -95,38 +99,15 @@ class _AddUserScreenState extends State<AddUserScreen> {
                 BlocBuilder<AddUserCubit, AddUserState>(
                   builder: (context, state) {
                     return context.read<AddUserCubit>().state.addresses.isEmpty
-                        ? const Center(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text('No hay direcciones'),
-                                SizedBox(height: 20),
-                                Icon(RemixIcons.map_pin_line),
-                              ],
-                            ),
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text('No hay direcciones'),
+                              SizedBox(height: 20),
+                              Icon(RemixIcons.map_pin_line),
+                            ],
                           )
-                        : ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: context.read<AddUserCubit>().state.addresses.length,
-                            itemBuilder: (context, index) {
-                              final item = context.read<AddUserCubit>().state.addresses[index];
-                              return ListTile(
-                                leading: Container(
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xffe8f0fe),
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  padding: const EdgeInsets.all(10),
-                                  child: Icon(RemixIcons.map_pin_line, color: Colors.blue),
-                                ),
-                                title: Text(
-                                  item.country,
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                subtitle: Text(item.department),
-                              );
-                            },
-                          );
+                        : CustomDirections(addresses: state.addresses);
                   },
                 ),
 
@@ -138,12 +119,13 @@ class _AddUserScreenState extends State<AddUserScreen> {
                       await context.read<AddUserCubit>().onSubmittedUser();
                       if (!context.mounted) return;
                       if (context.read<AddUserCubit>().state.status == FormStatus.success) {
+                        context.read<ListUserCubit>().getUsers();
                         context.pop();
                       }
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.greenAccent,
-                      foregroundColor: Colors.white,
+                      backgroundColor: AppColors.primary,
+                      foregroundColor: AppColors.white,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                     ),
@@ -178,7 +160,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                 decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.greenAccent),
+                    borderSide: BorderSide(color: AppColors.accent),
                   ),
                   border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(9.0)),
@@ -200,7 +182,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
                 decoration: InputDecoration(
                   floatingLabelBehavior: FloatingLabelBehavior.always,
                   focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.greenAccent),
+                    borderSide: BorderSide(color: AppColors.accent),
                   ),
                   border: const OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(9.0)),
@@ -231,11 +213,12 @@ class _AddUserScreenState extends State<AddUserScreen> {
               ElevatedButton(
                 onPressed: () {
                   context.read<AddUserCubit>().onAddressChanged();
+
                   context.pop();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.greenAccent,
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppColors.primary,
+                  foregroundColor: AppColors.white,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                 ),
@@ -250,40 +233,3 @@ class _AddUserScreenState extends State<AddUserScreen> {
     );
   }
 }
-
-final countries = {'co': 'Colombia'};
-
-final Map<String, String> departments = {
-  '91': 'Amazonas',
-  '05': 'Antioquia',
-  '81': 'Arauca',
-  '08': 'Atlántico',
-  '13': 'Bolívar',
-  '15': 'Boyacá',
-  '17': 'Caldas',
-  '18': 'Caquetá',
-  '85': 'Casanare',
-  '19': 'Cauca',
-  '20': 'Cesar',
-  '27': 'Chocó',
-  '23': 'Córdoba',
-  '25': 'Cundinamarca',
-  '94': 'Guainía',
-  '95': 'Guaviare',
-  '41': 'Huila',
-  '44': 'La Guajira',
-  '47': 'Magdalena',
-  '50': 'Meta',
-  '52': 'Nariño',
-  '54': 'Norte de Santander',
-  '86': 'Putumayo',
-  '63': 'Quindío',
-  '66': 'Risaralda',
-  '88': 'San Andrés y Providencia',
-  '68': 'Santander',
-  '70': 'Sucre',
-  '73': 'Tolima',
-  '76': 'Valle del Cauca',
-  '97': 'Vaupés',
-  '99': 'Vichada',
-};

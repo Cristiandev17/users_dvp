@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:users_dvp_app/core/theme/app_colors.dart';
+import 'package:users_dvp_app/core/theme/app_text_styles.dart';
 import 'package:users_dvp_app/presentation/cubits/list_user/list_user_cubit.dart';
 import 'package:users_dvp_app/presentation/router/route_names.dart';
 import 'package:users_dvp_app/presentation/widgets/custom_card_content.dart';
@@ -18,6 +20,12 @@ class _ListUserScreenState extends State<ListUserScreen> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<ListUserCubit>().getUsers();
+    });
+  }
+
+  void didPopNext() {
     context.read<ListUserCubit>().getUsers();
   }
 
@@ -30,7 +38,7 @@ class _ListUserScreenState extends State<ListUserScreen> {
           if (state.status == Status.loading) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [SpinKitSpinningLines(color: Colors.blue)],
+              children: [SpinKitSpinningLines(color: AppColors.primaryDark)],
             );
           }
 
@@ -44,8 +52,9 @@ class _ListUserScreenState extends State<ListUserScreen> {
                 title: state.users[index].name,
                 subtitle: state.users[index].lastName,
                 icon: RemixIcons.arrow_right_s_line,
-                onTap: () =>
-                    context.push(RouteNames.detailUser, extra: {'id': state.users[index].id}),
+                onTap: () {
+                  context.push(RouteNames.detailUser, extra: {'id': state.users[index].id});
+                },
               );
             },
           );
@@ -74,7 +83,7 @@ class _EmptyListView extends StatelessWidget {
           Text(
             'No hay usuarios registrados',
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            style: AppTextStyles.headlineMedium,
           ),
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:users_dvp_app/core/theme/app_colors.dart';
 
 class CustomTextField extends StatelessWidget {
   final String title;
@@ -52,8 +53,8 @@ class CustomTextField extends StatelessWidget {
       decoration: InputDecoration(
         prefixText: prefixText,
         floatingLabelBehavior: FloatingLabelBehavior.always,
-        focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.greenAccent)),
-        focusColor: Colors.greenAccent,
+        focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: AppColors.accent)),
+        focusColor: AppColors.accent,
         border: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(9.0))),
         labelText: title,
         hintText: placeholder,

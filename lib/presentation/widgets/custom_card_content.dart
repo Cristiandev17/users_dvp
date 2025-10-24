@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:users_dvp_app/core/constants/app_constants.dart';
+import 'package:users_dvp_app/core/theme/app_colors.dart';
+import 'package:users_dvp_app/core/theme/app_text_styles.dart';
 
 class CustomCardContent extends StatelessWidget {
   final String title;
@@ -20,7 +22,7 @@ class CustomCardContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card.outlined(
       elevation: 4.0,
-      color: Colors.white,
+      color: AppColors.white,
       margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: Padding(
@@ -39,7 +41,11 @@ class CustomCardContent extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [Text(title), SizedBox(height: 10), Text(subtitle)],
+                children: [
+                  Text(title, style: AppTextStyles.titleLarge),
+                  SizedBox(height: 10),
+                  Text(subtitle, style: AppTextStyles.bodyBoldLarge),
+                ],
               ),
               Spacer(),
               Icon(icon, size: 30),
