@@ -26,10 +26,6 @@ class _ListUserScreenState extends State<ListUserScreen> {
     });
   }
 
-  void didPopNext() {
-    context.read<ListUserCubit>().getUsers();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

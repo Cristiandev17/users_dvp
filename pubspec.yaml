@@ -8,7 +8,6 @@ environment:
 
 dependencies:
   cherry_toast: ^1.13.0
-  dart_mediatr: ^1.0.5
   equatable: ^2.0.7
   flex_color_scheme: ^8.3.0
   flutter:

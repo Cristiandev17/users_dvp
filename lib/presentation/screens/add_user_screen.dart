@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:users_dvp_app/core/constants/app_message.dart';
 import 'package:users_dvp_app/core/constants/location_constants.dart';
-import 'package:users_dvp_app/core/mediatr/mediator.dart';
+import 'package:users_dvp_app/core/mediator/mediator.dart';
 import 'package:users_dvp_app/core/theme/app_colors.dart';
 import 'package:users_dvp_app/core/utils/providers/snackbar_provider.dart';
 import 'package:users_dvp_app/presentation/cubits/add_user/add_user_cubit.dart';

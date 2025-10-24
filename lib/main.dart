@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:users_dvp_app/core/mediatr/mediator.dart';
+import 'package:users_dvp_app/core/mediator/mediator.dart';
 import 'package:users_dvp_app/core/theme/app_theme.dart';
 import 'package:users_dvp_app/presentation/cubits/add_user/add_user_cubit.dart';
 import 'package:users_dvp_app/presentation/cubits/detail_user/detail_user_cubit.dart';
