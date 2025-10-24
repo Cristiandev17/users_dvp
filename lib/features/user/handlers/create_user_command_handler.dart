@@ -19,6 +19,6 @@ class CreateUserCommandHandler extends ICommandHandler<CreateUserCommand, Future
       return result;
     }
 
-    return Result.success(false);
+    return Result.success(result.value!);
   }
 }
