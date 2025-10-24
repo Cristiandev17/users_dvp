@@ -1,7 +1,8 @@
 import 'package:dart_mediatr/dart_mediatr.dart';
+import 'package:users_dvp_app/core/failures/failure.dart';
 import 'package:users_dvp_app/domain/models/user_model.dart';
 
-class GetUserByIdQuery extends IQuery<Future<UserModel>> {
+class GetUserByIdQuery extends IQuery<Future<Result<UserModel>>> {
   final int id;
 
   GetUserByIdQuery(this.id);

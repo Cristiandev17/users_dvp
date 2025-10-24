@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:users_dvp_app/core/constants/app_message.dart';
 import 'package:users_dvp_app/domain/models/address_model.dart';
 import 'package:users_dvp_app/domain/models/user_model.dart';
 import 'package:dart_mediatr/dart_mediatr.dart';
@@ -15,13 +16,19 @@ class DetailUserCubit extends Cubit<DetailUserState> {
     try {
       emit(state.copyWith(status: Status.loading));
       final user = await _mediator.send(GetUserByIdQuery(id));
-      if (user.id == 0) {
-        emit(state.copyWith(status: Status.failure));
+      if (user.value?.id == 0) {
+        emit(state.copyWith(status: Status.failure, message: AppMessage.noUserFound));
         return;
       }
-      emit(state.copyWith(status: Status.success, user: user));
+      emit(
+        state.copyWith(
+          status: Status.success,
+          user: user.value,
+          message: AppMessage.userGetSuccess,
+        ),
+      );
     } catch (e) {
-      emit(state.copyWith(status: Status.failure));
+      emit(state.copyWith(status: Status.failure, message: AppMessage.unknownError));
     }
   }
 }

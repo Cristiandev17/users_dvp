@@ -2,6 +2,8 @@ import 'package:dart_mediatr/dart_mediatr.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
+import 'package:users_dvp_app/core/constants/app_message.dart';
+import 'package:users_dvp_app/core/failures/failure.dart';
 import 'package:users_dvp_app/core/utils/mixins/state_updater_mixin.dart';
 import 'package:users_dvp_app/core/utils/validations/datetime_input_validation.dart';
 import 'package:users_dvp_app/core/utils/validations/lastname_input_validation.dart';
@@ -32,14 +34,14 @@ class AddUserCubit extends Cubit<AddUserState> with StateUpdaterMixin<AddUserSta
         .addAddresses(state.addresses)
         .build();
 
-    final result = await _mediator.sendCommand<CreateUserCommand, Future<bool>>(
+    final result = await _mediator.sendCommand<CreateUserCommand, Future<Result<bool>>>(
       CreateUserCommand(user: user),
     );
 
-    if (result) {
-      emit(state.copyWith(status: FormStatus.success));
+    if (result.isSuccess) {
+      emit(state.copyWith(status: FormStatus.success, message: AppMessage.userSavedSuccess));
     } else {
-      emit(state.copyWith(status: FormStatus.failure));
+      emit(state.copyWith(status: FormStatus.failure, message: result.failure!.message));
     }
   }
 

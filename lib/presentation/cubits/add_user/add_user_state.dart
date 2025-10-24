@@ -8,6 +8,7 @@ class AddUserState extends Equatable {
   final DateTimeInputValidation birthDate;
   final bool isValid;
   final FormStatus status;
+  final String? message;
 
   final List<AddressModel> addresses;
 
@@ -22,6 +23,7 @@ class AddUserState extends Equatable {
     this.birthDate = const DateTimeInputValidation.pure(),
     this.isValid = false,
     this.status = FormStatus.initial,
+    this.message,
     this.addresses = const [],
     this.country = '',
     this.department = '',
@@ -35,6 +37,7 @@ class AddUserState extends Equatable {
     DateTimeInputValidation? birthDate,
     bool? isValid,
     FormStatus? status,
+    String? message,
     List<AddressModel>? addresses,
     String? country,
     String? department,
@@ -47,6 +50,7 @@ class AddUserState extends Equatable {
       birthDate: birthDate ?? this.birthDate,
       isValid: isValid ?? this.isValid,
       status: status ?? this.status,
+      message: message ?? this.message,
       addresses: addresses ?? this.addresses,
       country: country ?? this.country,
       department: department ?? this.department,
@@ -56,12 +60,13 @@ class AddUserState extends Equatable {
   }
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
     name,
     lastName,
     birthDate,
     isValid,
     status,
+    message,
     addresses,
     country,
     department,

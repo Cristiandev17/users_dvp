@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:go_router/go_router.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:users_dvp_app/core/constants/app_message.dart';
 import 'package:users_dvp_app/core/theme/app_colors.dart';
 import 'package:users_dvp_app/core/theme/app_text_styles.dart';
 import 'package:users_dvp_app/presentation/cubits/list_user/list_user_cubit.dart';
@@ -32,33 +33,37 @@ class _ListUserScreenState extends State<ListUserScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Lista de usuarios')),
-      body: BlocBuilder<ListUserCubit, ListUserState>(
-        builder: (context, state) {
-          if (state.status == Status.loading) {
-            return Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [SpinKitSpinningLines(color: AppColors.primaryDark)],
-            );
-          }
-
-          if (state.users.isEmpty && state.status != Status.loading) {
-            return const _EmptyListView();
-          }
-          return ListView.builder(
-            itemCount: state.users.length,
-            itemBuilder: (context, index) {
-              return CustomCardContent(
-                title: state.users[index].name,
-                subtitle: state.users[index].lastName,
-                icon: RemixIcons.arrow_right_s_line,
-                onTap: () {
-                  context.push(RouteNames.detailUser, extra: {'id': state.users[index].id});
-                },
+      body: SafeArea(
+        child: BlocBuilder<ListUserCubit, ListUserState>(
+          builder: (context, state) {
+            if (state.status == Status.loading) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [SpinKitSpinningLines(color: AppColors.primaryDark)],
               );
-            },
-          );
-        },
+            }
+
+            if (state.users.isEmpty && state.status != Status.loading) {
+              return const _EmptyListView();
+            }
+            return ListView.builder(
+              itemCount: state.users.length,
+              itemBuilder: (context, index) {
+                return CustomCardContent(
+                  title: state.users[index].name,
+                  subtitle: state.users[index].lastName,
+                  icon: RemixIcons.arrow_right_s_line,
+                  onTap: () {
+                    context.push(
+                      RouteNames.detailUser,
+                      extra: {AppMessage.parameterId: state.users[index].id},
+                    );
+                  },
+                );
+              },
+            );
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {context.push(RouteNames.addUser)},
@@ -81,7 +86,7 @@ class _EmptyListView extends StatelessWidget {
           Icon(RemixIcons.user_forbid_fill, size: 100),
           SizedBox(height: 20),
           Text(
-            'No hay usuarios registrados',
+            AppMessage.usersNoRegistered,
             textAlign: TextAlign.center,
             style: AppTextStyles.headlineMedium,
           ),

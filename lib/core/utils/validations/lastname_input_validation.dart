@@ -1,4 +1,5 @@
 import 'package:formz/formz.dart';
+import 'package:users_dvp_app/core/constants/app_message.dart';
 
 enum LastnameInputValidationError { empty, length }
 
@@ -16,11 +17,11 @@ class LastnameInputValidation extends FormzInput<String, LastnameInputValidation
     }
 
     if (error == LastnameInputValidationError.empty) {
-      return 'El campo no puede estar vacio';
+      return AppMessage.messageEmpty;
     }
 
     if (error == LastnameInputValidationError.length) {
-      return 'El campo debe tener al menos 4 caracteres';
+      return AppMessage.messageErrorLength;
     }
 
     return null;

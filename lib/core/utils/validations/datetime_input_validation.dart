@@ -1,4 +1,5 @@
 import 'package:formz/formz.dart';
+import 'package:users_dvp_app/core/constants/app_message.dart';
 
 enum DateTimeInputValidationError { empty, invalidFormat }
 
@@ -16,7 +17,7 @@ class DateTimeInputValidation extends FormzInput<String, DateTimeInputValidation
     }
 
     if (error == DateTimeInputValidationError.empty) {
-      return 'El campo no puede estar vacio';
+      return AppMessage.messageEmpty;
     }
 
     return null;
