@@ -18,19 +18,19 @@ const AddressEntitySchema = Schema(
       name: r'city',
       type: IsarType.string,
     ),
-    r'country': PropertySchema(
+    r'complement': PropertySchema(
       id: 1,
+      name: r'complement',
+      type: IsarType.string,
+    ),
+    r'country': PropertySchema(
+      id: 2,
       name: r'country',
       type: IsarType.string,
     ),
-    r'state': PropertySchema(
-      id: 2,
-      name: r'state',
-      type: IsarType.string,
-    ),
-    r'street': PropertySchema(
+    r'department': PropertySchema(
       id: 3,
-      name: r'street',
+      name: r'department',
       type: IsarType.string,
     )
   },
@@ -53,19 +53,19 @@ int _addressEntityEstimateSize(
     }
   }
   {
+    final value = object.complement;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.country;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
   }
   {
-    final value = object.state;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
-    final value = object.street;
+    final value = object.department;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
     }
@@ -80,9 +80,9 @@ void _addressEntitySerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.city);
-  writer.writeString(offsets[1], object.country);
-  writer.writeString(offsets[2], object.state);
-  writer.writeString(offsets[3], object.street);
+  writer.writeString(offsets[1], object.complement);
+  writer.writeString(offsets[2], object.country);
+  writer.writeString(offsets[3], object.department);
 }
 
 AddressEntity _addressEntityDeserialize(
@@ -93,9 +93,9 @@ AddressEntity _addressEntityDeserialize(
 ) {
   final object = AddressEntity(
     city: reader.readStringOrNull(offsets[0]),
-    country: reader.readStringOrNull(offsets[1]),
-    state: reader.readStringOrNull(offsets[2]),
-    street: reader.readStringOrNull(offsets[3]),
+    complement: reader.readStringOrNull(offsets[1]),
+    country: reader.readStringOrNull(offsets[2]),
+    department: reader.readStringOrNull(offsets[3]),
   );
   return object;
 }
@@ -276,6 +276,160 @@ extension AddressEntityQueryFilter
   }
 
   QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
+      complementIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'complement',
+      ));
+    });
+  }
+
+  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
+      complementIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'complement',
+      ));
+    });
+  }
+
+  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
+      complementEqualTo(
+    String? value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'complement',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
+      complementGreaterThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'complement',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
+      complementLessThan(
+    String? value, {
+    bool include = false,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'complement',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
+      complementBetween(
+    String? lower,
+    String? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'complement',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
+      complementStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'complement',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
+      complementEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'complement',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
+      complementContains(String value, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'complement',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
+      complementMatches(String pattern, {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'complement',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
+      complementIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'complement',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
+      complementIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'complement',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
       countryIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
@@ -430,31 +584,31 @@ extension AddressEntityQueryFilter
   }
 
   QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      stateIsNull() {
+      departmentIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'state',
+        property: r'department',
       ));
     });
   }
 
   QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      stateIsNotNull() {
+      departmentIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'state',
+        property: r'department',
       ));
     });
   }
 
   QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      stateEqualTo(
+      departmentEqualTo(
     String? value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'state',
+        property: r'department',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -462,7 +616,7 @@ extension AddressEntityQueryFilter
   }
 
   QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      stateGreaterThan(
+      departmentGreaterThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -470,7 +624,7 @@ extension AddressEntityQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'state',
+        property: r'department',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -478,7 +632,7 @@ extension AddressEntityQueryFilter
   }
 
   QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      stateLessThan(
+      departmentLessThan(
     String? value, {
     bool include = false,
     bool caseSensitive = true,
@@ -486,7 +640,7 @@ extension AddressEntityQueryFilter
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'state',
+        property: r'department',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -494,7 +648,7 @@ extension AddressEntityQueryFilter
   }
 
   QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      stateBetween(
+      departmentBetween(
     String? lower,
     String? upper, {
     bool includeLower = true,
@@ -503,7 +657,7 @@ extension AddressEntityQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'state',
+        property: r'department',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
@@ -514,13 +668,13 @@ extension AddressEntityQueryFilter
   }
 
   QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      stateStartsWith(
+      departmentStartsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'state',
+        property: r'department',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -528,13 +682,13 @@ extension AddressEntityQueryFilter
   }
 
   QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      stateEndsWith(
+      departmentEndsWith(
     String value, {
     bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'state',
+        property: r'department',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -542,10 +696,10 @@ extension AddressEntityQueryFilter
   }
 
   QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      stateContains(String value, {bool caseSensitive = true}) {
+      departmentContains(String value, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.contains(
-        property: r'state',
+        property: r'department',
         value: value,
         caseSensitive: caseSensitive,
       ));
@@ -553,10 +707,10 @@ extension AddressEntityQueryFilter
   }
 
   QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      stateMatches(String pattern, {bool caseSensitive = true}) {
+      departmentMatches(String pattern, {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.matches(
-        property: r'state',
+        property: r'department',
         wildcard: pattern,
         caseSensitive: caseSensitive,
       ));
@@ -564,174 +718,20 @@ extension AddressEntityQueryFilter
   }
 
   QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      stateIsEmpty() {
+      departmentIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'state',
+        property: r'department',
         value: '',
       ));
     });
   }
 
   QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      stateIsNotEmpty() {
+      departmentIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'state',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      streetIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'street',
-      ));
-    });
-  }
-
-  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      streetIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'street',
-      ));
-    });
-  }
-
-  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      streetEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'street',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      streetGreaterThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        include: include,
-        property: r'street',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      streetLessThan(
-    String? value, {
-    bool include = false,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.lessThan(
-        include: include,
-        property: r'street',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      streetBetween(
-    String? lower,
-    String? upper, {
-    bool includeLower = true,
-    bool includeUpper = true,
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.between(
-        property: r'street',
-        lower: lower,
-        includeLower: includeLower,
-        upper: upper,
-        includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      streetStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'street',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      streetEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'street',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      streetContains(String value, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'street',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      streetMatches(String pattern, {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'street',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      streetIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'street',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<AddressEntity, AddressEntity, QAfterFilterCondition>
-      streetIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'street',
+        property: r'department',
         value: '',
       ));
     });

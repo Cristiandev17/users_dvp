@@ -1,10 +1,16 @@
 part of 'list_user_cubit.dart';
 
-sealed class ListUserState extends Equatable {
-  const ListUserState();
+enum Status { initial, loading, success, failure, error, loaded }
+
+class ListUserState extends Equatable {
+  final List<UserModel> users;
+  final Status status;
+  const ListUserState({this.users = const [], this.status = Status.initial});
+
+  ListUserState copyWith({List<UserModel>? users, Status? status}) {
+    return ListUserState(users: users ?? this.users, status: status ?? this.status);
+  }
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [users, status];
 }
-
-final class ListUserInitial extends ListUserState {}

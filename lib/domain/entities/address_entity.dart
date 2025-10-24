@@ -4,15 +4,15 @@ part 'address_entity.g.dart';
 
 @embedded
 class AddressEntity {
-  String? street;
+  String? complement;
   String? city;
   String? country;
-  String? state;
+  String? department;
 
-  AddressEntity({this.street, this.city, this.country, this.state}) {
-    street = street;
+  AddressEntity({this.complement, this.city, this.country, this.department}) {
+    complement = complement;
     city = city;
     country = country;
-    state = state;
+    department = department;
   }
 }

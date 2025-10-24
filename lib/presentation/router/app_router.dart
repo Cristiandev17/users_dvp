@@ -7,8 +7,15 @@ import 'package:users_dvp_app/presentation/screens/list_user_screen.dart';
 final appRouter = GoRouter(
   routes: [
     GoRoute(path: RouteNames.listUser, builder: (context, state) => const ListUserScreen()),
-    GoRoute(path: RouteNames.addUser, builder: (context, state) => const AddUserScreen()),
-    GoRoute(path: RouteNames.detailUser, builder: (context, state) => const DetailUserScreen()),
+    GoRoute(path: RouteNames.addUser, builder: (context, state) => AddUserScreen()),
+    GoRoute(
+      path: RouteNames.detailUser,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>;
+        final parameter = extra['id'] ?? 0;
+        return DetailUserScreen(id: parameter);
+      },
+    ),
   ],
   initialLocation: '/',
 );

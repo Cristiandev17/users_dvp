@@ -10,13 +10,13 @@ class UserEntity {
   String? name;
   DateTime? birthDate;
   String? lastName;
-  List<AddressEntity>? address;
+  List<AddressEntity> addresses = [];
 
-  UserEntity({this.id, this.name, this.birthDate, this.lastName, this.address}) {
+  UserEntity({this.id, this.name, this.birthDate, this.lastName, this.addresses = const []}) {
     id = id;
     name = name;
     birthDate = birthDate;
     lastName = lastName;
-    address = address;
+    addresses = addresses;
   }
 }

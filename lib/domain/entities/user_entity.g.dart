@@ -17,9 +17,9 @@ const UserEntitySchema = CollectionSchema(
   name: r'UserEntity',
   id: 965090076791382600,
   properties: {
-    r'address': PropertySchema(
+    r'addresses': PropertySchema(
       id: 0,
-      name: r'address',
+      name: r'addresses',
       type: IsarType.objectList,
       target: r'AddressEntity',
     ),
@@ -59,18 +59,13 @@ int _userEntityEstimateSize(
   Map<Type, List<int>> allOffsets,
 ) {
   var bytesCount = offsets.last;
+  bytesCount += 3 + object.addresses.length * 3;
   {
-    final list = object.address;
-    if (list != null) {
-      bytesCount += 3 + list.length * 3;
-      {
-        final offsets = allOffsets[AddressEntity]!;
-        for (var i = 0; i < list.length; i++) {
-          final value = list[i];
-          bytesCount +=
-              AddressEntitySchema.estimateSize(value, offsets, allOffsets);
-        }
-      }
+    final offsets = allOffsets[AddressEntity]!;
+    for (var i = 0; i < object.addresses.length; i++) {
+      final value = object.addresses[i];
+      bytesCount +=
+          AddressEntitySchema.estimateSize(value, offsets, allOffsets);
     }
   }
   {
@@ -98,7 +93,7 @@ void _userEntitySerialize(
     offsets[0],
     allOffsets,
     AddressEntitySchema.serialize,
-    object.address,
+    object.addresses,
   );
   writer.writeDateTime(offsets[1], object.birthDate);
   writer.writeString(offsets[2], object.lastName);
@@ -112,12 +107,13 @@ UserEntity _userEntityDeserialize(
   Map<Type, List<int>> allOffsets,
 ) {
   final object = UserEntity(
-    address: reader.readObjectList<AddressEntity>(
-      offsets[0],
-      AddressEntitySchema.deserialize,
-      allOffsets,
-      AddressEntity(),
-    ),
+    addresses: reader.readObjectList<AddressEntity>(
+          offsets[0],
+          AddressEntitySchema.deserialize,
+          allOffsets,
+          AddressEntity(),
+        ) ??
+        const [],
     birthDate: reader.readDateTimeOrNull(offsets[1]),
     id: id,
     lastName: reader.readStringOrNull(offsets[2]),
@@ -135,11 +131,12 @@ P _userEntityDeserializeProp<P>(
   switch (propertyId) {
     case 0:
       return (reader.readObjectList<AddressEntity>(
-        offset,
-        AddressEntitySchema.deserialize,
-        allOffsets,
-        AddressEntity(),
-      )) as P;
+            offset,
+            AddressEntitySchema.deserialize,
+            allOffsets,
+            AddressEntity(),
+          ) ??
+          const []) as P;
     case 1:
       return (reader.readDateTimeOrNull(offset)) as P;
     case 2:
@@ -242,28 +239,11 @@ extension UserEntityQueryWhere
 
 extension UserEntityQueryFilter
     on QueryBuilder<UserEntity, UserEntity, QFilterCondition> {
-  QueryBuilder<UserEntity, UserEntity, QAfterFilterCondition> addressIsNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'address',
-      ));
-    });
-  }
-
   QueryBuilder<UserEntity, UserEntity, QAfterFilterCondition>
-      addressIsNotNull() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'address',
-      ));
-    });
-  }
-
-  QueryBuilder<UserEntity, UserEntity, QAfterFilterCondition>
-      addressLengthEqualTo(int length) {
+      addressesLengthEqualTo(int length) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'address',
+        r'addresses',
         length,
         true,
         length,
@@ -272,10 +252,11 @@ extension UserEntityQueryFilter
     });
   }
 
-  QueryBuilder<UserEntity, UserEntity, QAfterFilterCondition> addressIsEmpty() {
+  QueryBuilder<UserEntity, UserEntity, QAfterFilterCondition>
+      addressesIsEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'address',
+        r'addresses',
         0,
         true,
         0,
@@ -285,10 +266,10 @@ extension UserEntityQueryFilter
   }
 
   QueryBuilder<UserEntity, UserEntity, QAfterFilterCondition>
-      addressIsNotEmpty() {
+      addressesIsNotEmpty() {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'address',
+        r'addresses',
         0,
         false,
         999999,
@@ -298,13 +279,13 @@ extension UserEntityQueryFilter
   }
 
   QueryBuilder<UserEntity, UserEntity, QAfterFilterCondition>
-      addressLengthLessThan(
+      addressesLengthLessThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'address',
+        r'addresses',
         0,
         true,
         length,
@@ -314,13 +295,13 @@ extension UserEntityQueryFilter
   }
 
   QueryBuilder<UserEntity, UserEntity, QAfterFilterCondition>
-      addressLengthGreaterThan(
+      addressesLengthGreaterThan(
     int length, {
     bool include = false,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'address',
+        r'addresses',
         length,
         include,
         999999,
@@ -330,7 +311,7 @@ extension UserEntityQueryFilter
   }
 
   QueryBuilder<UserEntity, UserEntity, QAfterFilterCondition>
-      addressLengthBetween(
+      addressesLengthBetween(
     int lower,
     int upper, {
     bool includeLower = true,
@@ -338,7 +319,7 @@ extension UserEntityQueryFilter
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.listLength(
-        r'address',
+        r'addresses',
         lower,
         includeLower,
         upper,
@@ -788,10 +769,10 @@ extension UserEntityQueryFilter
 
 extension UserEntityQueryObject
     on QueryBuilder<UserEntity, UserEntity, QFilterCondition> {
-  QueryBuilder<UserEntity, UserEntity, QAfterFilterCondition> addressElement(
+  QueryBuilder<UserEntity, UserEntity, QAfterFilterCondition> addressesElement(
       FilterQuery<AddressEntity> q) {
     return QueryBuilder.apply(this, (query) {
-      return query.object(q, r'address');
+      return query.object(q, r'addresses');
     });
   }
 }
@@ -920,10 +901,10 @@ extension UserEntityQueryProperty
     });
   }
 
-  QueryBuilder<UserEntity, List<AddressEntity>?, QQueryOperations>
-      addressProperty() {
+  QueryBuilder<UserEntity, List<AddressEntity>, QQueryOperations>
+      addressesProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'address');
+      return query.addPropertyName(r'addresses');
     });
   }
 
